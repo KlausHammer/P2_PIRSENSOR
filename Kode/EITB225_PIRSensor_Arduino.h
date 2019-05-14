@@ -8,7 +8,15 @@
 #ifndef EITB225_PIRSENSOR_ARDUINO_H_
 #define EITB225_PIRSENSOR_ARDUINO_H_
 
+#include <Arduino.h>
+#include "src/motor.h"
 
+const uint8_t sen1Pin = 2;
+const uint8_t sen2Pin = 3;
+const uint8_t sen3Pin = 21;
+
+
+const int tacksPeRound = 374;
 
 
 

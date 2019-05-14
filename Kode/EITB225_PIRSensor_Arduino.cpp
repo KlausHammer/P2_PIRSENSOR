@@ -1,15 +1,11 @@
-#include <Arduino.h>
+
 #include "EITB225_PIRSensor_Arduino.h"
 
-const uint8_t sen1Pin = 2;
-const uint8_t sen2Pin = 3;
-const uint8_t sen3Pin = 21;
-
 int waiter = 0;
-
 unsigned long ofsetTime = 500;
 
-float encodeRatio = 360/374;
+
+float encodeRatio = 360/tacksPeRound;
 
 int pirPos[] = {
 		-100*encodeRatio,
@@ -31,14 +27,7 @@ void kalibrering(){
 	//Dreg motoren rundt intil at den rammer knappen.
 }
 
-int pid(int error){
 
-	return 0;
-}
-
-void move(int taks){
-
-}
 
 void sen1(){
 	timeSet[0] = millis();
@@ -53,17 +42,8 @@ void sen3(){
 	waiter = 1;
 }
 
-int checkTimeDif(){
-	String checkSum = "";
-
-	for(int i = 0; i < sizeof(timeSet); i++){
-		if(timeSet[i] > millis()-ofsetTime){
-			 checkSum += 1;
-		}else{
-			checkSum += 0;
-		}
-	}
-	switch(checkSum.toInt()){
+int whatCase(int checkSum){
+	switch(checkSum){
 	case 000 :	//NULL		//fejl
 		return 0;
 	case 001 :	//sen 3
@@ -83,11 +63,21 @@ int checkTimeDif(){
 	default:
 		break;
 	}
-
 	return 0;
 }
 
+int checkTimeDif(){
+	String checkSum = "";
 
+	for(int i = 0; i < sizeof(timeSet); i++){
+		if(timeSet[i] > millis()-ofsetTime){
+			 checkSum += 1;
+		}else{
+			checkSum += 0;
+		}
+	}
+	return checkSum.toInt();
+}
 
 
 void setup() {
@@ -101,12 +91,18 @@ void setup() {
 }
 
 void loop() {
-	int	senCase;
+	int	bitArray;
+	int senCase;
 	int wantPos;
 
 	while(waiter == 0);
 
-	senCase = checkTimeDif();
+	bitArray = checkTimeDif();
+	senCase = whatCase(bitArray);
+	if(senCase==0){
+		Serial.println("ERROR senCase = 0");
+		while(1);
+	}
 	wantPos = pirPos[senCase-1];
 
 	move(wantPos);
