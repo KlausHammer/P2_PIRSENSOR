@@ -23,6 +23,7 @@ const int Kp = 1;
 const int Ki = 1;
 const int Kd = 1;
 
+extern void resetEncoder();
 
 extern int pid(int error);
 

@@ -6,12 +6,23 @@
  */
 #include "motor.h"
 
-
-
 Encoder enc(encA, encB);
 
+/*
+ * Intterupt pin that resets encoder value.
+ */
+void resetEncoder(){
+	enc.write(0);
+}
 
-int pid(int target){
+
+/*
+ * Calculates Correction value from target encoder value.
+ * returns correction.
+ */
+int pid(
+		int target /*Target encoder value*/
+		){
 	int currPos = enc.read();
 
 	int error = 0;
@@ -38,14 +49,22 @@ int pid(int target){
 	return correction;
 }
 
-void move(int target){
+/*
+ * Moves the motor to the dessired encoder value.
+ * as long, as correction is higher than minSpeed.
+ */
+void move(
+		int target /*Target encoder value*/
+		){
 	int correction;
 
-	correction = pid(target);
+	while(correction != 0){
+		correction = pid(target);
 
-	if(correction > minSpeed){
-		analogWrite(motorPWM, correction);
-	}else{
-		analogWrite(motorPWM, 0);
+		if(correction > minSpeed){
+			analogWrite(motorPWM, correction);
+		}else{
+			analogWrite(motorPWM, 0);
+		}
 	}
 }

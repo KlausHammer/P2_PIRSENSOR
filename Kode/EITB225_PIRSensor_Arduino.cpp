@@ -42,6 +42,13 @@ void sen3(){
 	waiter = 1;
 }
 
+/*
+ * Takes an int as input, then from the int
+ * determens which combination of sensors that is in use.
+ * Returns an int from 1-x or 0
+ * where x is the number of combinations.
+ * If it returns 0, there is an error.
+ */
 int whatCase(int checkSum){
 	switch(checkSum){
 	case 000 :	//NULL		//fejl
@@ -66,6 +73,12 @@ int whatCase(int checkSum){
 	return 0;
 }
 
+/*
+ * Checks the time defference between current time,
+ * to note which sensors has been activated whitin
+ * the ofsetTime.
+ * Returns a bit array, as an int.
+ */
 int checkTimeDif(){
 	String checkSum = "";
 
@@ -85,6 +98,8 @@ void setup() {
 	attachInterrupt(digitalPinToInterrupt(sen1Pin), sen1, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen2Pin), sen2, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen3Pin), sen3, RISING);
+
+	attachInterrupt(digitalPinToInterrupt(resetPin), resetEncoder, FALLING);
 
 	kalibrering();
 

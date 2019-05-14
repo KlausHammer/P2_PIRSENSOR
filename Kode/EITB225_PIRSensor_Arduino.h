@@ -15,6 +15,8 @@ const uint8_t sen1Pin = 2;
 const uint8_t sen2Pin = 3;
 const uint8_t sen3Pin = 21;
 
+const uint8_t resetPin = 20;
+
 
 const int tacksPeRound = 374;
 
