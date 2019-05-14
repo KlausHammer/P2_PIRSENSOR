@@ -9,12 +9,22 @@
 Encoder enc(encA, encB);
 
 /*
+ * Calibrates the system to know where the motor is.
+ */
+void kalibrering(){
+	//Dreg motoren rundt intil at den rammer knappen.
+	enc.write(1000);
+	analogWrite(motorPWM, 100);
+	while(enc.read() < 30);
+	analogWrite(motorPWM, 0);
+}
+
+/*
  * Intterupt pin that resets encoder value.
  */
 void resetEncoder(){
 	enc.write(0);
 }
-
 
 /*
  * Calculates Correction value from target encoder value.

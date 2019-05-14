@@ -21,14 +21,6 @@ unsigned long timeSet[] = {
 		0
 };
 
-
-
-void kalibrering(){
-	//Dreg motoren rundt intil at den rammer knappen.
-}
-
-
-
 void sen1(){
 	timeSet[0] = millis();
 	waiter = 1;

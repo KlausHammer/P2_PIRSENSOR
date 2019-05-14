@@ -16,17 +16,16 @@ const uint8_t encA = 18;
 const uint8_t encB = 19;
 
 const uint8_t motorPWM = 44;
-
 const int minSpeed = 30;
 
 const int Kp = 1;
 const int Ki = 1;
 const int Kd = 1;
 
+extern void kalibrering();
 extern void resetEncoder();
-
 extern int pid(int error);
-
 extern void move(int taks);
+
 
 #endif /* SRC_MOTOR_H_ */
