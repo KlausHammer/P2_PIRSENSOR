@@ -50,7 +50,7 @@ int pid(
 
 	e = error * Kp;
 	i = integral * Ki;
-  	d = derivative * Kd;
+  	d = derivative * Kd+5;
   	correction = e + i + d;
 
   	//Correction skal ligge mellem 0 og 100
