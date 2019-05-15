@@ -114,6 +114,8 @@ void loop() {
 
 	move(wantPos);
 
+	waiter=0;
+
 }
 
 

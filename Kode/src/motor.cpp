@@ -59,6 +59,16 @@ int pid(
 	return correction;
 }
 
+int chooseDirection(
+		int target /*Target encoder value*/
+		){
+	if(){
+
+	}
+
+	return 0;
+}
+
 /*
  * Moves the motor to the dessired encoder value.
  * as long, as correction is higher than minSpeed.
@@ -67,10 +77,12 @@ void move(
 		int target /*Target encoder value*/
 		){
 	int correction;
+	int dirr;
+
+	dirr = chooseDirection(target);
 
 	while(correction != 0){
 		correction = pid(target);
-
 		if(correction > minSpeed){
 			analogWrite(motorPWM, correction);
 		}else{
