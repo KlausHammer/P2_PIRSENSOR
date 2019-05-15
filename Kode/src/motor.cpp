@@ -77,7 +77,7 @@ void move(
 		int target /*Target encoder value*/
 		){
 	int correction;
-	int dirr;
+	int dirr = 0;
 
 	dirr = chooseDirection(target);
 
