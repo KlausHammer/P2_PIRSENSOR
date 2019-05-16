@@ -151,7 +151,7 @@ void move(
 		rawCorrection = pid(target);
 	}
 
-	Serial.println("Sluk motor");
+	Serial.println("Sluk motor ");
 	Serial.print("Encode value: ");
 	Serial.println(enc.read());
 	analogWrite(motorPWM, 0);
