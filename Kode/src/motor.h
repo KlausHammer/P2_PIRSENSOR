@@ -14,13 +14,15 @@
 
 const uint8_t encA = 18;
 const uint8_t encB = 19;
+const uint8_t dirPin = 7;
 
 const uint8_t motorPWM = 44;
-const int minSpeed = 30;
+const int maxSpeed = 100;
+const int minSpeed = 20;
 
-const int Kp = 1;
-const int Ki = 1;
-const int Kd = 1;
+const float Kp = 1.00;
+const float Ki = 0.001;
+const float Kd = 1.00;
 
 extern void kalibrering();
 extern void resetEncoder();

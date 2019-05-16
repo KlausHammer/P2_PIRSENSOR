@@ -4,14 +4,12 @@ int waiter = 0;
 unsigned long ofsetTime = 500;
 
 
-float encodeRatio = 360/tacksPeRound;
-
 int pirPos[] = {
-		-100*encodeRatio,
-		-50*encodeRatio,
-		0,
-		50*encodeRatio,
-		100*encodeRatio
+		50.00*encodeRatio,
+		75.00*encodeRatio,
+		100.00*encodeRatio,
+		125.00*encodeRatio,
+		150.00*encodeRatio
 };
 
 unsigned long timeSet[] = {
@@ -23,13 +21,18 @@ unsigned long timeSet[] = {
 void sen1(){
 	timeSet[0] = millis();
 	waiter = 1;
+	Serial.println("1");
+
 }
 void sen2(){
 	timeSet[1] = millis();
+	Serial.println("2");
 	waiter = 1;
+
 }
 void sen3(){
 	timeSet[2] = millis();
+	Serial.println("3");
 	waiter = 1;
 }
 
@@ -44,11 +47,11 @@ int whatCase(int checkSum){
 	switch(checkSum){
 	case 000 :	//NULL		//fejl
 		return 0;
-	case 001 :	//sen 3
+	case 1 :	//sen 3
 		return 5;
-	case 010 :	//sen 2
+	case 10 :	//sen 2
 		return 3;
-	case 011 :	//sen 2+3
+	case 11 :	//sen 2+3
 		return 4;
 	case 100 :	//sen 1
 		return 1;
@@ -72,36 +75,42 @@ int whatCase(int checkSum){
  */
 int checkTimeDif(){
 	String checkSum = "";
-
-	for(int i = 0; i < sizeof(timeSet); i++){
+	for(int i = 0; i < (sizeof(timeSet) / sizeof(timeSet[0])); i++){
 		if(timeSet[i] > millis()-ofsetTime){
 			 checkSum += 1;
 		}else{
 			checkSum += 0;
 		}
 	}
+	Serial.println(checkSum);
+	Serial.println(checkSum.toInt());
 	return checkSum.toInt();
 }
 
 
 void setup() {
 	Serial.begin(9600);
+	Serial.println("System startup");
 	attachInterrupt(digitalPinToInterrupt(sen1Pin), sen1, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen2Pin), sen2, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen3Pin), sen3, RISING);
 
 	attachInterrupt(digitalPinToInterrupt(resetPin), resetEncoder, FALLING);
 
+	pinMode(dirPin, OUTPUT);
 	kalibrering();
-
 }
 
 void loop() {
 	int	bitArray;
 	int senCase;
 	int wantPos;
-
-	while(waiter == 0);
+	Serial.println("Loop - before wait");
+	while(waiter == 0){
+		//Serial.println("Loop - in wait");
+		delay(20);
+	}
+	Serial.println("Loop - after wait");
 
 	bitArray = checkTimeDif();
 	senCase = whatCase(bitArray);
@@ -109,9 +118,15 @@ void loop() {
 		Serial.println("ERROR senCase = 0");
 		while(1);
 	}
+
 	wantPos = pirPos[senCase-1];
+
+	Serial.print("Target: ");
+	Serial.println(wantPos);
+
 
 	move(wantPos);
 
+	waiter=0;
 }
 

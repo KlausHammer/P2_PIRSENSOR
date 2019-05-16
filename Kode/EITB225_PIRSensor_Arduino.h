@@ -18,8 +18,7 @@ const uint8_t sen3Pin = 21;
 const uint8_t resetPin = 20;
 
 
-const int tacksPeRound = 374;
-
-
+const float tacksPeRound = 1496.00;
+const float encodeRatio = tacksPeRound/360;
 
 #endif /* EITB225_PIRSENSOR_ARDUINO_H_ */
