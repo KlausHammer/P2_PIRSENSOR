@@ -62,8 +62,13 @@ int pid(
 
 	e = error * Kp;
 	i = integral * Ki;
+<<<<<<< HEAD
   	d = derivative * Kd;
   	correction = e + i;
+=======
+  	d = derivative * Kd+5;
+  	correction = e + i + d;
+>>>>>>> refs/remotes/origin/master
 
   	lastError = error;
 
