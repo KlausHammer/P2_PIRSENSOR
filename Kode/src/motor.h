@@ -14,9 +14,10 @@
 
 const uint8_t encA = 18;
 const uint8_t encB = 19;
+const uint8_t dir = 7;
 
 const uint8_t motorPWM = 44;
-const int minSpeed = 30;
+const int minSpeed = 20;
 
 const int Kp = 1;
 const int Ki = 1;
