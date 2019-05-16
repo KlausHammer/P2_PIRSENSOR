@@ -26,7 +26,7 @@ void kalibrering() {
 	}
 	analogWrite(motorPWM, 0);
 
-	Serial.println("Kalibrering slut");
+	Serial.println("Kalibrering slut.");
 	//delay(500);
 }
 
