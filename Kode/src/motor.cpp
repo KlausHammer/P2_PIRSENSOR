@@ -43,7 +43,7 @@ void resetEncoder(){
  * returns correction.
  */
 int pid(
-		int target /*Target encoder value*/
+		int target /*Target encoder value.*/
 		){
 	int currPos = enc.read();
 
