@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Drawing.Drawing2D;
-
+using System.Text.RegularExpressions;
+using Timer = System.Timers.Timer;
+using System.Timers;
 
 
 namespace Styring_kamera
@@ -21,6 +23,7 @@ namespace Styring_kamera
     public partial class Form1 : Form
     {
 
+
         SerialPortCom comm;
         public delegate void AddDataDelegate(String mystring);
         public AddDataDelegate myDelegate;
@@ -28,24 +31,25 @@ namespace Styring_kamera
         public string messagereceived;
         string motor_grader = "";
         string motor_rpm = "";
-        string retning = "";
+
         string senddata = "";
+        private int retningmodtaget = 0;
         private string test_sensor1 = "";
         private string test_sensor2 = "";
         private string test_sensor3 = "\n";
-        bool sensor1 = false;
-        bool sensor2 = false;
-        bool sensor3 = false;
+       public bool sensor1 = false;
+        public bool sensor2 = false;
+       public bool sensor3 = false;
         private int isensor1 = 0;
         private int isensor2 = 0;
         private int isensor3 = 0;
-        
+        int radarposition = -125;
 
 
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -53,10 +57,29 @@ namespace Styring_kamera
             comm = new SerialPortCom(this);
             comm.SetPortNameValues(Com_Port);
             this.myDelegate = new AddDataDelegate(AddDataMethod);
+            aktivertimers();
         }
 
+        void aktivertimers()
+        {
+            void timer_venstre()
+            {
+                Venstretimer.Enabled = false;
+                //form button
+                But_Venstre.MouseDown += But_Venstre_MouseDown; 
+                But_Venstre.MouseUp += But_Venstre_MouseUp;
 
+            }
+            void timer_højre()
+            {
+                Højretimer.Enabled = false;
+                But_Højre.MouseDown += But_Højre_MouseDown;
+                But_Højre.MouseUp += But_Højre_MouseUp;
 
+            }
+        }
+
+        
 
 
         public void Connect_Click(object sender, EventArgs e)
@@ -87,26 +110,18 @@ namespace Styring_kamera
             }
 
 
-
         }
 
 
 
 
-        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void Send_Info_Click(object sender, EventArgs e)
         {
-            if (retning == "right" || retning == "left")
-            { 
 
+            retningmodtaget = 0;
                motor_grader = Convert.ToString(Grader_input.Value);
                motor_rpm = Convert.ToString(numericUpDown1.Value);
-               senddata = "-Retning ";
-               senddata += retning;
                senddata += " -grader ";
                senddata += motor_grader;
                senddata += " -rpm ";
@@ -115,35 +130,20 @@ namespace Styring_kamera
                senddata += test_sensor2;
                senddata += test_sensor3;
                comm.WriteData(senddata);
-             //  Receive_data.Text = serialPort1.ReadLine();
+ 
+                //   ReloadForm2();
+                //  Receive_data.Text = serialPort1.ReadLine();
 
-            //    if (Receive_data.Text.Contains("-grader"))
-             //   {
+                //    if (Receive_data.Text.Contains("-grader"))
+                //   {
 
-                 //   sensor2 = true;
-             //       sensor3 = true;
-            //        panel1.Refresh();
-            //    }
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("Husk at vælg en retning");
-            }
+                //   sensor2 = true;
+                //       sensor3 = true;
+                //        panel1.Refresh();
+                //    }
         }
 
-        private void Button_højre_Click(object sender, EventArgs e)
-        {
-            retning = "right";
-            Button_venstre.Enabled = true;
-            Button_højre.Enabled = false;
-        }
 
-        private void Button_venstre_Click(object sender, EventArgs e)
-        {
-            retning = "left";
-            Button_venstre.Enabled = false;
-            Button_højre.Enabled = true;
-        }
 
 
         public void Serielmodtaget(string message)
@@ -161,6 +161,18 @@ namespace Styring_kamera
         {
             Receive_data.Text = messagereceived;
 
+            if (messagereceived.Contains("-grader"))
+            {
+
+                int midlertidig = messagereceived.IndexOf("-grader");
+                midlertidig += 7;
+
+                string test = messagereceived.Substring(midlertidig, 3);
+              
+             //   test = Regex.Match(test, @"\d+").Value;
+                retningmodtaget = Convert.ToInt32(test);
+                radarposition += retningmodtaget;
+            }
 
             if (messagereceived.Contains("-Sensor1 ON"))
             {
@@ -193,7 +205,6 @@ namespace Styring_kamera
             {
                 sensor3 = false;
             }
-
             panel1.Refresh();
         }
 
@@ -202,11 +213,6 @@ namespace Styring_kamera
             serialPort1.Close();
         }
 
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         public void Panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -227,17 +233,18 @@ namespace Styring_kamera
             Pen pen = new Pen(Color.Black);
             Brush Detection = new SolidBrush(Color.Red);
             Brush none = new SolidBrush(Color.White);
+            Pen radar = new Pen(Color.Lime);
 
 
             Rectangle rect = new Rectangle(center.X - radius, center.Y - radius, radius * 2, radius * 2);
             paper.DrawEllipse(pen, rect);
            paper.DrawPie(pen, rect, 0, -100); // Sensor 1
            paper.DrawPie(pen, rect, -50, -100); // Sensor 2
-       //    paper.FillPie(Detection, rect, 0, -150); // Sensor 2
            paper.DrawPie(pen, rect, -100, -100); // Sensor 3
-            //    paper.FillPie(Detection, rect, 0, -250); // Sensor 3
+            paper.DrawPie(radar, rect, radarposition, 50); // Radar
+ 
 
-          if(sensor1 == true && sensor2 == false && sensor3 == false)
+            if (sensor1 == true && sensor2 == false && sensor3 == false)
             {
                 paper.FillPie(Detection, rect, 0, -50); // Sensor 1
 
@@ -320,6 +327,48 @@ namespace Styring_kamera
                 test_sensor3 = " \n";
                 return;
             }
+        }
+
+        private void But_Venstre_MouseDown(object sender, MouseEventArgs e)
+        {
+            Venstretimer.Start();
+        }
+
+        private void But_Venstre_MouseUp(object sender, MouseEventArgs e)
+        {
+            Venstretimer.Stop();
+            Venstretimer.Dispose();
+            motor_grader = "0";
+        }
+
+        private void But_Højre_MouseDown(object sender, MouseEventArgs e)
+        {
+            Højretimer.Start();
+        }
+
+        private void But_Højre_MouseUp(object sender, MouseEventArgs e)
+        {
+            Højretimer.Stop();
+            Højretimer.Dispose();
+            motor_grader = "0";
+        }
+
+        private void Venstretimer_Tick(object sender, EventArgs e)
+        {
+            int grader = Convert.ToInt32(motor_grader);
+            grader += -1;
+            Grader_input.Text = Convert.ToString(grader);
+            Send_Info_Click(sender, e);
+            //   comm.WriteData(" -grader " + motor_grader +"  \n");
+        }
+
+        private void Højretimer_Tick(object sender, EventArgs e)
+        {
+            int grader = Convert.ToInt32(motor_grader);
+            grader += 1;
+           Grader_input.Text = Convert.ToString(grader);
+           Send_Info_Click(sender, e);
+            //    comm.WriteData(" -grader " + motor_grader + "  \n");
         }
     }
 }

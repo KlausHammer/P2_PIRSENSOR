@@ -38,9 +38,6 @@
             this.RPM = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.Button_højre = new System.Windows.Forms.Button();
-            this.Button_venstre = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Grader_input = new System.Windows.Forms.NumericUpDown();
             this.Send_Info = new System.Windows.Forms.Button();
@@ -50,9 +47,15 @@
             this.But_Sensor1 = new System.Windows.Forms.Button();
             this.But_Sensor2 = new System.Windows.Forms.Button();
             this.But_Sensor3 = new System.Windows.Forms.Button();
+            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.But_Venstre = new System.Windows.Forms.Button();
+            this.But_Højre = new System.Windows.Forms.Button();
+            this.Venstretimer = new System.Windows.Forms.Timer(this.components);
+            this.Højretimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Grader_input)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // Connect
@@ -116,7 +119,6 @@
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.NumericUpDown1_ValueChanged);
             // 
             // RPM
             // 
@@ -126,36 +128,6 @@
             this.RPM.Size = new System.Drawing.Size(31, 13);
             this.RPM.TabIndex = 6;
             this.RPM.Text = "RPM";
-            // 
-            // Button_højre
-            // 
-            this.Button_højre.Location = new System.Drawing.Point(114, 233);
-            this.Button_højre.Name = "Button_højre";
-            this.Button_højre.Size = new System.Drawing.Size(59, 55);
-            this.Button_højre.TabIndex = 7;
-            this.Button_højre.Text = "Højre";
-            this.Button_højre.UseVisualStyleBackColor = true;
-            this.Button_højre.Click += new System.EventHandler(this.Button_højre_Click);
-            // 
-            // Button_venstre
-            // 
-            this.Button_venstre.Location = new System.Drawing.Point(49, 233);
-            this.Button_venstre.Name = "Button_venstre";
-            this.Button_venstre.Size = new System.Drawing.Size(59, 55);
-            this.Button_venstre.TabIndex = 8;
-            this.Button_venstre.Text = "Venstre";
-            this.Button_venstre.UseVisualStyleBackColor = true;
-            this.Button_venstre.Click += new System.EventHandler(this.Button_venstre_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(79, 217);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Motor Retning";
             // 
             // label4
             // 
@@ -175,6 +147,11 @@
             0,
             0,
             0});
+            this.Grader_input.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
             this.Grader_input.Name = "Grader_input";
             this.Grader_input.Size = new System.Drawing.Size(60, 20);
             this.Grader_input.TabIndex = 12;
@@ -246,11 +223,50 @@
             this.But_Sensor3.UseVisualStyleBackColor = true;
             this.But_Sensor3.Click += new System.EventHandler(this.But_Sensor3_Click);
             // 
+            // fileSystemWatcher1
+            // 
+            this.fileSystemWatcher1.EnableRaisingEvents = true;
+            this.fileSystemWatcher1.SynchronizingObject = this;
+            // 
+            // But_Venstre
+            // 
+            this.But_Venstre.BackColor = System.Drawing.SystemColors.Control;
+            this.But_Venstre.Location = new System.Drawing.Point(31, 243);
+            this.But_Venstre.Name = "But_Venstre";
+            this.But_Venstre.Size = new System.Drawing.Size(77, 58);
+            this.But_Venstre.TabIndex = 19;
+            this.But_Venstre.Text = "Venstre";
+            this.But_Venstre.UseVisualStyleBackColor = false;
+            this.But_Venstre.MouseDown += new System.Windows.Forms.MouseEventHandler(this.But_Venstre_MouseDown);
+            this.But_Venstre.MouseUp += new System.Windows.Forms.MouseEventHandler(this.But_Venstre_MouseUp);
+            // 
+            // But_Højre
+            // 
+            this.But_Højre.BackColor = System.Drawing.SystemColors.Control;
+            this.But_Højre.Location = new System.Drawing.Point(114, 243);
+            this.But_Højre.Name = "But_Højre";
+            this.But_Højre.Size = new System.Drawing.Size(77, 58);
+            this.But_Højre.TabIndex = 20;
+            this.But_Højre.Text = "Højre";
+            this.But_Højre.UseVisualStyleBackColor = false;
+            this.But_Højre.MouseDown += new System.Windows.Forms.MouseEventHandler(this.But_Højre_MouseDown);
+            this.But_Højre.MouseUp += new System.Windows.Forms.MouseEventHandler(this.But_Højre_MouseUp);
+            // 
+            // Venstretimer
+            // 
+            this.Venstretimer.Tick += new System.EventHandler(this.Venstretimer_Tick);
+            // 
+            // Højretimer
+            // 
+            this.Højretimer.Tick += new System.EventHandler(this.Højretimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(582, 313);
+            this.Controls.Add(this.But_Højre);
+            this.Controls.Add(this.But_Venstre);
             this.Controls.Add(this.But_Sensor3);
             this.Controls.Add(this.But_Sensor2);
             this.Controls.Add(this.But_Sensor1);
@@ -259,9 +275,6 @@
             this.Controls.Add(this.Send_Info);
             this.Controls.Add(this.Grader_input);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.Button_venstre);
-            this.Controls.Add(this.Button_højre);
             this.Controls.Add(this.RPM);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label2);
@@ -269,15 +282,18 @@
             this.Controls.Add(this.Com_Port);
             this.Controls.Add(this.Baud_rate);
             this.Controls.Add(this.Connect);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Grader_input)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,9 +309,6 @@
         private System.Windows.Forms.Label RPM;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.HelpProvider helpProvider1;
-        private System.Windows.Forms.Button Button_højre;
-        private System.Windows.Forms.Button Button_venstre;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown Grader_input;
         private System.Windows.Forms.Button Send_Info;
@@ -306,6 +319,11 @@
         private System.Windows.Forms.Button But_Sensor1;
         private System.Windows.Forms.Button But_Sensor2;
         private System.Windows.Forms.Button But_Sensor3;
+        private System.IO.FileSystemWatcher fileSystemWatcher1;
+        private System.Windows.Forms.Button But_Højre;
+        private System.Windows.Forms.Button But_Venstre;
+        private System.Windows.Forms.Timer Venstretimer;
+        private System.Windows.Forms.Timer Højretimer;
     }
 }
 
