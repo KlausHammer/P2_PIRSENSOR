@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Styring_kamera", "Styring_kamera\Styring_kamera.csproj", "{037C3DED-4EB9-49C9-A3DE-79723EC6182F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{037C3DED-4EB9-49C9-A3DE-79723EC6182F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{037C3DED-4EB9-49C9-A3DE-79723EC6182F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{037C3DED-4EB9-49C9-A3DE-79723EC6182F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{037C3DED-4EB9-49C9-A3DE-79723EC6182F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2586BAFF-5EC8-47BF-8C06-772D81C96072}
+	EndGlobalSection
+EndGlobal
