@@ -50,8 +50,7 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.But_Venstre = new System.Windows.Forms.Button();
             this.But_Højre = new System.Windows.Forms.Button();
-            this.Venstretimer = new System.Windows.Forms.Timer(this.components);
-            this.Højretimer = new System.Windows.Forms.Timer(this.components);
+            this.TimerVenstre = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Grader_input)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -237,6 +236,7 @@
             this.But_Venstre.TabIndex = 19;
             this.But_Venstre.Text = "Venstre";
             this.But_Venstre.UseVisualStyleBackColor = false;
+            this.But_Venstre.Click += new System.EventHandler(this.But_Venstre_Click);
             this.But_Venstre.MouseDown += new System.Windows.Forms.MouseEventHandler(this.But_Venstre_MouseDown);
             this.But_Venstre.MouseUp += new System.Windows.Forms.MouseEventHandler(this.But_Venstre_MouseUp);
             // 
@@ -251,14 +251,6 @@
             this.But_Højre.UseVisualStyleBackColor = false;
             this.But_Højre.MouseDown += new System.Windows.Forms.MouseEventHandler(this.But_Højre_MouseDown);
             this.But_Højre.MouseUp += new System.Windows.Forms.MouseEventHandler(this.But_Højre_MouseUp);
-            // 
-            // Venstretimer
-            // 
-            this.Venstretimer.Tick += new System.EventHandler(this.Venstretimer_Tick);
-            // 
-            // Højretimer
-            // 
-            this.Højretimer.Tick += new System.EventHandler(this.Højretimer_Tick);
             // 
             // Form1
             // 
@@ -322,8 +314,7 @@
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button But_Højre;
         private System.Windows.Forms.Button But_Venstre;
-        private System.Windows.Forms.Timer Venstretimer;
-        private System.Windows.Forms.Timer Højretimer;
+        private System.Windows.Forms.Timer TimerVenstre;
     }
 }
 
