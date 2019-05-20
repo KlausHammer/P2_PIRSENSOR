@@ -40,7 +40,7 @@ String samlString(int senCase){
 	String tmpString = "";
 
 	dataString = "-Grader ";
-	dataString += (String)encVal();
+	//dataString += (String)getEncVal();
 	dataString += senString(senCase);
 
 

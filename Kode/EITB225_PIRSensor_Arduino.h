@@ -9,9 +9,16 @@
 #define EITB225_PIRSENSOR_ARDUINO_H_
 
 #include <Arduino.h>
+
+#include "src/Motor.h"
 #include "src/PirS.h"
-#include "src/motor.h"
 #include "src/USBComm.h"
+
+const uint8_t dirPin = 7;
+const uint8_t motorPWM = 44;
+
+const uint8_t encA = 19;
+const uint8_t encB = 18;
 
 const uint8_t sen1Pin = 2;
 const uint8_t sen2Pin = 3;

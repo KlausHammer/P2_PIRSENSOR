@@ -2,6 +2,7 @@
 
 
 PirS pir(tacksPeRound);
+Motor mot;
 
 void setup() {
 	Serial.begin(9600);
@@ -16,11 +17,11 @@ void setup() {
 	attachInterrupt(digitalPinToInterrupt(sen2Pin), pir.sen2, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen3Pin), pir.sen3, RISING);
 
-	attachInterrupt(digitalPinToInterrupt(resetPin), resetEncoder, FALLING);
+	attachInterrupt(digitalPinToInterrupt(resetPin), mot.resetEncoder, FALLING);
 
 
 
-	kalibrering();
+	mot.kalibrering();
 
 }
 
@@ -63,7 +64,7 @@ void loop() {
 	Serial.println(pir.getPos(senCase-1));
 
 
-	move(wantPos);
+	mot.move(wantPos);
 
 	//usbKommunikationUd(senCase);
 

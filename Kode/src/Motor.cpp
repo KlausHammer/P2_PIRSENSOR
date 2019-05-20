@@ -4,7 +4,7 @@
  *  Created on: 14. maj 2019
  *      Author: NielsDyrberg
  */
-#include "motor.h"
+#include "Motor.h"
 
 Encoder enc(encA, encB);
 
@@ -13,14 +13,12 @@ int lastError = 0;
 unsigned long testTime=0;
 int i = 0;
 
-int encVal(){
-	return enc.read();
-}
+
 
 /*
  * Calibrates the system to know where the motor is.
  */
-void kalibrering() {
+void Motor::kalibrering() {
 	//Dreg motoren rundt intil at den rammer knappen.
 	Serial.println("Kalibrering start");
 	enc.write(100000);
@@ -33,6 +31,8 @@ void kalibrering() {
 	analogWrite(motorPWM, 0);
 
 	delay(150);
+
+	tack = enc.read();
 	Serial.print("Curr pos: ");
 	Serial.println(enc.read());
 	Serial.println("Kalibrering slut.");
@@ -42,7 +42,7 @@ void kalibrering() {
 /*
  * Intterupt pin that resets encoder value.
  */
-void resetEncoder(){
+void Motor::resetEncoder(){
 
 
 	enc.write(0);
@@ -66,7 +66,7 @@ void resetEncoder(){
  * Calculates Correction value from target encoder value.
  * returns correction.
  */
-int pid(
+int Motor::pid(
 		int target /*Target encoder value.*/
 		){
 	int currPos = enc.read();
@@ -121,7 +121,7 @@ int chooseDirection(
  * Moves the motor to the dessired encoder value.
  * as long, as correction is higher than minSpeed.
  */
-void move(
+void Motor::move(
 		int target /*Target encoder value*/
 ) {
 	int rawCorrection = 0;
@@ -172,7 +172,7 @@ void move(
 
 		analogWrite(motorPWM, 0);
 
-		delay(70);
+		delay(150);
 
 		rawCorrection = pid(target);
 	}
@@ -181,6 +181,7 @@ void move(
 	Serial.print("Encode value: ");
 	Serial.println(enc.read());
 	analogWrite(motorPWM, 0);
+	tack = enc.read();
 	integral = 0;
 
 }
