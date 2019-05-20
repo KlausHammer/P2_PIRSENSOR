@@ -16,7 +16,7 @@ unsigned long PirS::timeSet[3] = {
 
 int PirS::pirPos[5] = {
 		50.00,
-		75.00,
+		75.0,
 		100.00,
 		125.00,
 		150.00
