@@ -9,6 +9,7 @@
 #define EITB225_PIRSENSOR_ARDUINO_H_
 
 #include <Arduino.h>
+#include "src/PirS.h"
 #include "src/motor.h"
 #include "src/USBComm.h"
 
