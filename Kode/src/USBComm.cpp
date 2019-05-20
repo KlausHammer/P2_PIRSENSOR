@@ -49,7 +49,7 @@ String samlString(int senCase){
 }
 
 void usbKommunikationUd(){
-	samlString();
+	//samlString();
 }
 
 void usbKommunikationInd(){

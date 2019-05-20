@@ -7,10 +7,32 @@
 
 #include "PirS.h"
 
-PirS::PirS(int *waitAdr) {
+int PirS::waiter = 0;
+unsigned long PirS::timeSet[3] = {
+		0,
+		0,
+		0
+};
+
+int PirS::pirPos[5] = {
+		50.00,
+		75.00,
+		100.00,
+		125.00,
+		150.00
+	};
+
+
+PirS::PirS(float tacks) {
 	// TODO Auto-generated constructor stub
-	int *waiter = *waitAdr;
+	encodeRatio = tacks/360;
 	caseNr = 0;
+
+	for(int i = 0; i < (sizeof(pirPos) / sizeof(pirPos[0])); i++){
+		pirPos[i] = pirPos[i]*encodeRatio;
+	}
+
+
 
 }
 
@@ -18,17 +40,13 @@ PirS::~PirS() {
 	// TODO Auto-generated destructor stub
 }
 
+void PirS::setWaiter(int x){
+	waiter = x;
+}
 
 void PirS::pirGrd(int taks){
 	tmpGrd = taks/encodeRatio;
-};
-
-
-unsigned long timeSet[] = {
-		0,
-		0,
-		0
-};
+}
 
 void PirS::sen1(){
 	timeSet[0] = millis();
@@ -42,7 +60,7 @@ void PirS::sen2(){
 	waiter = 1;
 
 }
-void sen3(){
+void PirS::sen3(){
 	timeSet[2] = millis();
 	Serial.println("3");
 	waiter = 1;
@@ -92,8 +110,8 @@ void PirS::whatCase(int checkSum){
  * the ofsetTime.
  * Returns a bit array, as an int.
  */
-int PirS::checkTimeDif(){
-	String checkSum = "";
+void PirS::checkTimeDif(){
+	checkSum = "";
 	for(int i = 0; i < (sizeof(timeSet) / sizeof(timeSet[0])); i++){
 		if(timeSet[i] > millis()-ofsetTime){
 			 checkSum += 1;
@@ -101,7 +119,8 @@ int PirS::checkTimeDif(){
 			checkSum += 0;
 		}
 	}
-	Serial.println(checkSum);
+	Serial.print("checkTimeDif() :");
+	Serial.print(checkSum);
+	Serial.print(" : ");
 	Serial.println(checkSum.toInt());
-	return checkSum.toInt();
 }

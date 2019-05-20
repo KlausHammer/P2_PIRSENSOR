@@ -33,6 +33,7 @@ void kalibrering() {
 	analogWrite(motorPWM, 0);
 
 	delay(150);
+	Serial.print("Curr pos: ");
 	Serial.println(enc.read());
 	Serial.println("Kalibrering slut.");
 	//delay(500);
@@ -45,7 +46,7 @@ void resetEncoder(){
 
 
 	enc.write(0);
-	Serial.println("Encode reset");
+	Serial.println("EN RE");
 
 
 	/*

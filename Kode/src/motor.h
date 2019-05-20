@@ -18,7 +18,7 @@ const uint8_t dirPin = 7;
 
 const uint8_t motorPWM = 44;
 const int maxSpeed = 100;
-const int minSpeed = 15;
+const int minSpeed = 17;
 
 const float Kp = 1.00;
 const float Ki = 0.001;
