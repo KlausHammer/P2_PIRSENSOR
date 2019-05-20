@@ -11,6 +11,13 @@ int pirPos[] = {
 		125.00*encodeRatio,
 		150.00*encodeRatio
 };
+float pirGrd(int taks){
+	float grd = 0.00;
+	grd = taks/encodeRatio;
+
+	return grd;
+};
+
 
 unsigned long timeSet[] = {
 		0,
@@ -45,7 +52,7 @@ void sen3(){
  */
 int whatCase(int checkSum){
 	switch(checkSum){
-	case 000 :	//NULL		//fejl
+	case 0 :	//NULL		//fejl
 		return 0;
 	case 1 :	//sen 3
 		return 5;
@@ -91,17 +98,25 @@ int checkTimeDif(){
 void setup() {
 	Serial.begin(9600);
 	Serial.println("System startup");
+
+	pinMode(resetPin, INPUT_PULLUP);
+	pinMode(dirPin, OUTPUT);
+	pinMode(ledPin, OUTPUT);
+	digitalWrite(ledPin, LOW);
+
 	attachInterrupt(digitalPinToInterrupt(sen1Pin), sen1, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen2Pin), sen2, RISING);
 	attachInterrupt(digitalPinToInterrupt(sen3Pin), sen3, RISING);
 
 	attachInterrupt(digitalPinToInterrupt(resetPin), resetEncoder, FALLING);
 
-	pinMode(dirPin, OUTPUT);
+
 	kalibrering();
+
 }
 
 void loop() {
+
 	int	bitArray;
 	int senCase;
 	int wantPos;
@@ -110,12 +125,14 @@ void loop() {
 		//Serial.println("Loop - in wait");
 		delay(20);
 	}
+	delay(100);
 	Serial.println("Loop - after wait");
 
 	bitArray = checkTimeDif();
 	senCase = whatCase(bitArray);
 	if(senCase==0){
 		Serial.println("ERROR senCase = 0");
+		digitalWrite(ledPin, HIGH);
 		while(1);
 	}
 
@@ -127,6 +144,9 @@ void loop() {
 
 	move(wantPos);
 
+	usbKommunikationUd(senCase);
+
 	waiter=0;
+
 }
 

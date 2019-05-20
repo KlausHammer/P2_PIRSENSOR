@@ -10,6 +10,12 @@ Encoder enc(encA, encB);
 
 float integral = 0.00;
 int lastError = 0;
+unsigned long testTime=0;
+int i = 0;
+
+int encVal(){
+	return enc.read();
+}
 
 /*
  * Calibrates the system to know where the motor is.
@@ -19,13 +25,15 @@ void kalibrering() {
 	Serial.println("Kalibrering start");
 	enc.write(100000);
 	digitalWrite(dirPin, HIGH);
-	analogWrite(motorPWM, maxSpeed);
+	analogWrite(motorPWM, minSpeed);
 
-	while (enc.read() > 100) {
+	while (enc.read() > 200) {
 	delay(20);
 	}
 	analogWrite(motorPWM, 0);
 
+	delay(150);
+	Serial.println(enc.read());
 	Serial.println("Kalibrering slut.");
 	//delay(500);
 }
@@ -34,8 +42,23 @@ void kalibrering() {
  * Intterupt pin that resets encoder value.
  */
 void resetEncoder(){
+
+
 	enc.write(0);
 	Serial.println("Encode reset");
+
+
+	/*
+	if(millis() > testTime+50){
+		testTime = millis();
+		Serial.print(enc.read());
+		enc.write(0);
+		Serial.println(","+(String)i+";");
+		i++;
+	}
+	digitalWrite(dirPin, HIGH);
+	analogWrite(motorPWM, 50);
+	*/
 }
 
 /*
@@ -65,7 +88,7 @@ int pid(
   	d = derivative * Kd;
 
 
-  	correction = e + i + d;
+  	correction = e;
 
   	lastError = error;
 
@@ -118,7 +141,7 @@ void move(
 	Serial.print("Abs Corr: ");
 	Serial.println(abs(rawCorrection));
 
-	while(abs(rawCorrection) > 15){
+	while(abs(rawCorrection) > 4){
 		dirr = chooseDirection(target);
 		rawCorrection = pid(target);
 
@@ -137,18 +160,19 @@ void move(
 	analogWrite(motorPWM, 0);
 	delay(50);
 	rawCorrection = pid(target);
+
 	Serial.println("Præcis kørsel");
 
 
-	while(abs(rawCorrection) > 4){
+	while(abs(rawCorrection) > 5){
 		dirr = chooseDirection(target);
 
-		analogWrite(motorPWM, minSpeed);
-		delay(30);
+		analogWrite(motorPWM, 50);
+		delay(10);
 
 		analogWrite(motorPWM, 0);
 
-		delay(70);
+		delay(250);
 
 		rawCorrection = pid(target);
 	}
