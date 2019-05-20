@@ -11,9 +11,28 @@
 #include <Arduino.h>
 #include "../EITB225_PIRSensor_Arduino.h"
 
+class USBComm{
 
-extern void usbKommunikationUd();
-extern void usbKommunikationInd();
+private:
+	String dataString;
+	String tmpDataString;
+	String modData;
+	int targetGrd;
+
+	void senString(int senCase);
+	void samlString(int senCase, float ratio, int tack);
+
+public:
+	USBComm();
+	virtual ~USBComm();
+
+	void usbKommunikationUdAuto(int senCase, float ratio, int tack);
+	void usbKommunikationUdMan(float ratio, int tack);
+	int usbKommunikationInd();
+	int getTargetGrd(){ return targetGrd; }
+};
+
+
 
 
 #endif /* SRC_USBCOMM_H_ */

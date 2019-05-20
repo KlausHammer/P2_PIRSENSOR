@@ -8,11 +8,15 @@
 
 Encoder enc(encA, encB);
 
-float integral = 0.00;
-int lastError = 0;
-unsigned long testTime=0;
-int i = 0;
+Motor::Motor() {
+	// TODO Auto-generated constructor stub
 
+	tack = 0;
+}
+
+Motor::~Motor() {
+	// TODO Auto-generated destructor stub
+}
 
 
 /*
@@ -20,7 +24,7 @@ int i = 0;
  */
 void Motor::kalibrering() {
 	//Dreg motoren rundt intil at den rammer knappen.
-	Serial.println("Kalibrering start");
+//	Serial.println("Kalibrering start");
 	enc.write(100000);
 	digitalWrite(dirPin, HIGH);
 	analogWrite(motorPWM, minSpeed);
@@ -33,9 +37,11 @@ void Motor::kalibrering() {
 	delay(150);
 
 	tack = enc.read();
+	/*
 	Serial.print("Curr pos: ");
 	Serial.println(enc.read());
 	Serial.println("Kalibrering slut.");
+	*/
 	//delay(500);
 }
 
@@ -46,7 +52,7 @@ void Motor::resetEncoder(){
 
 
 	enc.write(0);
-	Serial.println("EN RE");
+//	Serial.println("EN RE");
 
 
 	/*
@@ -72,24 +78,16 @@ int Motor::pid(
 	int currPos = enc.read();
 
 	float error = 0.00;
-	float derivative = 0;
 	int correction = 0;
 
 	float e = 0.00;
-	float i = 0.00;
-	float d;
 
 	error = target - currPos;
 
-	integral = integral + error;
-	derivative = error - lastError;
 
 	e = error * Kp;
-	i = integral * Ki;
-  	d = derivative * Kd;
 
-
-  	correction = e + i + d;
+  	correction = e;
 
   	lastError = error;
 
@@ -101,11 +99,13 @@ int chooseDirection(
 		){
 
 	int currPos = enc.read();
+
+/*
 	Serial.print("Encode value: ");
 	Serial.print(currPos);
 	Serial.print(" : ");
 	Serial.println(enc.read());
-
+*/
 	if (currPos > target) {
 		digitalWrite(dirPin, LOW);
 		return 0;
@@ -133,6 +133,7 @@ void Motor::move(
 	dirr = chooseDirection(target);
 	rawCorrection = pid(target);
 
+	/*
 	Serial.print("Direction: ");
 	Serial.println(dirr);
 	Serial.print("RawCorrection: ");
@@ -141,7 +142,7 @@ void Motor::move(
 	Serial.println(enc.read());
 	Serial.print("Abs Corr: ");
 	Serial.println(abs(rawCorrection));
-
+*/
 	while(abs(rawCorrection) > 15){
 		dirr = chooseDirection(target);
 		rawCorrection = pid(target);
@@ -161,25 +162,27 @@ void Motor::move(
 	analogWrite(motorPWM, 0);
 	delay(50);
 	rawCorrection = pid(target);
+	/*
 	Serial.println("Præcis kørsel");
-
+*/
 
 	while(abs(rawCorrection) > 4){
 		dirr = chooseDirection(target);
 
 		analogWrite(motorPWM, minSpeed);
-		delay(30);
+		delay(25);
 
 		analogWrite(motorPWM, 0);
 
-		delay(150);
+		delay(100);
 
 		rawCorrection = pid(target);
 	}
-
+/*
 	Serial.println("Sluk motor ");
 	Serial.print("Encode value: ");
 	Serial.println(enc.read());
+*/
 	analogWrite(motorPWM, 0);
 	tack = enc.read();
 	integral = 0;

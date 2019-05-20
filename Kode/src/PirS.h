@@ -42,6 +42,7 @@ public:
 	int getCheckSum(){ return checkSum.toInt(); }
 	int getPos(int x){ return pirPos[x]; }
 	int getWaiter(){ return waiter; }
+	float getRatio(){ return encodeRatio; }
 };
 
 #endif /* PIRS_H_ */

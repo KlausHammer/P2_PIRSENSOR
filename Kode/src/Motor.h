@@ -18,8 +18,12 @@
 class Motor{
 
 private:
-	const int maxSpeed = 100;
+	const int maxSpeed = 30;
 	const int minSpeed = 20;
+
+	float integral = 0.00;
+	int lastError = 0;
+	unsigned long testTime=0;
 
 	const float Kp = 1.00;
 	const float Ki = 0.001;
@@ -30,6 +34,9 @@ private:
 	int pid(int error);
 
 public:
+	Motor();
+	virtual ~Motor();
+
 	void kalibrering();
 	static void resetEncoder();
 	void move(int taks);

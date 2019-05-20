@@ -51,18 +51,18 @@ void PirS::pirGrd(int taks){
 void PirS::sen1(){
 	timeSet[0] = millis();
 	waiter = 1;
-	Serial.println("1");
+//	Serial.println("1");
 
 }
 void PirS::sen2(){
 	timeSet[1] = millis();
-	Serial.println("2");
+//	Serial.println("2");
 	waiter = 1;
 
 }
 void PirS::sen3(){
 	timeSet[2] = millis();
-	Serial.println("3");
+//	Serial.println("3");
 	waiter = 1;
 }
 
@@ -119,8 +119,10 @@ void PirS::checkTimeDif(){
 			checkSum += 0;
 		}
 	}
+/*
 	Serial.print("checkTimeDif() :");
 	Serial.print(checkSum);
 	Serial.print(" : ");
 	Serial.println(checkSum.toInt());
+*/
 }
