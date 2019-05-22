@@ -272,10 +272,12 @@
             // 
             // TimerVenstre
             // 
+            this.TimerVenstre.Interval = 300;
             this.TimerVenstre.Tick += new System.EventHandler(this.TimerVenstre_Tick);
             // 
             // TimerHøjre
             // 
+            this.TimerHøjre.Interval = 300;
             this.TimerHøjre.Tick += new System.EventHandler(this.TimerHøjre_Tick);
             // 
             // Form1

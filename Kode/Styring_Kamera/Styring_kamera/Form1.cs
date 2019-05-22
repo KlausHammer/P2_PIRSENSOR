@@ -407,7 +407,7 @@ namespace Styring_kamera
         {
 
                 int grader = Convert.ToInt32(motor_grader);
-                grader += 1;
+                grader += 5;
                 Grader_input.Text = Convert.ToString(grader);
                 grader = 0;
                 Senddata();
@@ -419,7 +419,7 @@ namespace Styring_kamera
         {
 
                 int grader = Convert.ToInt32(motor_grader);
-                grader += -1;
+                grader += -5;
                 Grader_input.Text = Convert.ToString(grader);
                 grader = 0;
                 Senddata();

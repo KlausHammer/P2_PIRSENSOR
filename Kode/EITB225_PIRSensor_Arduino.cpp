@@ -11,6 +11,7 @@ void manualRun(){
 
 	int targetTack = (usb.getTargetGrd()*encodeRatio)+mot.getEncVal();
 	//Serial.println(targetTack);
+
 	mot.move(targetTack);
 
 	usb.usbKommunikationUdMan(pir.getRatio(), mot.getEncVal());
