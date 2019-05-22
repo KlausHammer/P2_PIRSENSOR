@@ -44,7 +44,6 @@ namespace Styring_kamera
         private int isensor2 = 0;
         private int isensor3 = 0;
         int radarposition = -125;
-        Stopwatch stopWatch = new Stopwatch();
 
         public Form1()
         {
@@ -57,7 +56,7 @@ namespace Styring_kamera
             comm = new SerialPortCom(this);
             comm.SetPortNameValues(Com_Port);
             this.myDelegate = new AddDataDelegate(AddDataMethod);
-            
+            debugenabled();
         }
 
 
@@ -80,8 +79,14 @@ namespace Styring_kamera
 
                     comm.BaudRate = Baud_rate.Text;
                     comm.ComPort = Com_Port.Text;
-                    Connect.Enabled = false;
+                    
                     comm.OpenPort();
+                    if (comm.OpenPort() == true)
+                        Connect.Enabled = false;
+                    else
+                    {
+                        System.Windows.Forms.MessageBox.Show("Kunne ikke åbne Com porten");
+                    }
 
                 }
 
@@ -107,14 +112,31 @@ namespace Styring_kamera
             senddata += test_sensor2;
             senddata += test_sensor3;
             comm.WriteData(senddata);
+            senddata = "";
 
+        }
+
+        private void debugenabled()
+        {
+            But_Sensor1.Visible = false;
+            But_Sensor2.Visible = false;
+            But_Sensor3.Visible = false;
+            groupBox1.Visible = false;
+            RPM.Visible = false;
+            numericUpDown1.Visible = false;
         }
 
 
 
         private void Send_Info_Click(object sender, EventArgs e)
         {
+
+            if (Connect.Enabled == false)
             Senddata();
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Tilslut til enhed først");
+            }
            
                 //   ReloadForm2();
                 //  Receive_data.Text = serialPort1.ReadLine();
@@ -148,13 +170,43 @@ namespace Styring_kamera
 
             if (messagereceived.Contains("-grader"))
             {
+                
 
                 int midlertidig = messagereceived.IndexOf("-grader");
                 midlertidig += 7;
+                string test;
 
-                string test = messagereceived.Substring(midlertidig, 3);
-              
-             //   test = Regex.Match(test, @"\d+").Value;
+                
+                if (messagereceived.Substring(midlertidig + 1, 1) == "-")
+                {
+                    int i = midlertidig + 1;
+                    while (messagereceived.Substring(i, 1) != " " )
+                    {
+                        i++;
+                    }
+
+                    
+                    i -= midlertidig;
+                    test = messagereceived.Substring(midlertidig, i);
+                    
+                }
+                else
+                {
+
+                    int i = midlertidig + 1;
+                    while (messagereceived.Substring(i, 1) != " ")
+                    {
+                        i++;
+                    }
+
+
+                    i -= midlertidig;
+                    test = messagereceived.Substring(midlertidig, i);
+
+                }
+
+
+                //   test = Regex.Match(test, @"\d+").Value;
                 retningmodtaget = Convert.ToInt32(test);
                 radarposition += retningmodtaget;
             }
@@ -191,11 +243,12 @@ namespace Styring_kamera
                 sensor3 = false;
             }
             panel1.Refresh();
+            messagereceived = "";
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            serialPort1.Close();
+            comm.ClosePort();
         }
 
 
@@ -226,7 +279,7 @@ namespace Styring_kamera
            paper.DrawPie(pen, rect, 0, -100); // Sensor 1
            paper.DrawPie(pen, rect, -50, -100); // Sensor 2
            paper.DrawPie(pen, rect, -100, -100); // Sensor 3
-            paper.DrawPie(radar, rect, radarposition, 50); // Radar
+
  
 
             if (sensor1 == true && sensor2 == false && sensor3 == false)
@@ -252,6 +305,7 @@ namespace Styring_kamera
                 paper.FillPie(Detection, rect, -200, 50);
 
             }
+            paper.DrawPie(radar, rect, radarposition, 50); // Radar
 
         }
 
@@ -274,7 +328,6 @@ namespace Styring_kamera
             }
  
         }
-        int i;
         private void But_Sensor2_Click(object sender, EventArgs e)
         {
 
@@ -317,10 +370,12 @@ namespace Styring_kamera
         private void But_Venstre_MouseDown(object sender, MouseEventArgs e)
         {
 
-            stopWatch.Restart();
-            //TimerVenstre.Interval = 1000;
-            //TimerVenstre.Start();
-            //TimerVenstre.Tick += new EventHandler(VenstreTimer_Tick);
+            if (Connect.Enabled == false)
+                TimerVenstre.Start();
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Tilslut til enhed først");
+            }
         }
    
 
@@ -332,45 +387,43 @@ namespace Styring_kamera
 
         private void But_Højre_MouseDown(object sender, MouseEventArgs e)
         {
-     
-
+            if (Connect.Enabled == false)
+                TimerHøjre.Start();
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Tilslut til enhed først");
+            }
         }
 
         private void But_Højre_MouseUp(object sender, MouseEventArgs e)
         {
-    
+            TimerHøjre.Stop();
             motor_grader = "0";
         }
+      
+ 
 
-        private void HøjreOnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        private void TimerHøjre_Tick(object sender, EventArgs e)
         {
-            int grader = Convert.ToInt32(motor_grader);
-            grader += 1;
-            Grader_input.Text = Convert.ToString(grader);
-            grader = 0;
-            Senddata();
+
+                int grader = Convert.ToInt32(motor_grader);
+                grader += 1;
+                Grader_input.Text = Convert.ToString(grader);
+                grader = 0;
+                Senddata();
+
+   
         }
 
-        private void VenstreOnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            int grader = Convert.ToInt32(motor_grader);
-            grader += -1;
-            Grader_input.Text = Convert.ToString(grader);
-            grader = 0;
-            Senddata();
-        }
-
-        private void But_Venstre_Click(object sender, EventArgs e)
+        private void TimerVenstre_Tick(object sender, EventArgs e)
         {
 
-        }
-       
-        void VenstreTimer_Tick(object sender, EventArgs e)
-
-        {
+                int grader = Convert.ToInt32(motor_grader);
+                grader += -1;
+                Grader_input.Text = Convert.ToString(grader);
+                grader = 0;
+                Senddata();
             
-          //  i++;
-          //  Receive_data.Text = Convert.ToString(i);
 
         }
     }

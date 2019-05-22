@@ -28,3 +28,13 @@ C:\Users\knham\Documents\Github\PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj
 C:\Users\knham\Documents\Github\PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.csproj.CoreCompileInputs.cache
 C:\Users\knham\Documents\Github\PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.exe
 C:\Users\knham\Documents\Github\PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.pdb
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\bin\Debug\Styring_kamera.exe.config
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\bin\Debug\Styring_kamera.exe
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\bin\Debug\Styring_kamera.pdb
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.csprojAssemblyReference.cache
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.Form1.resources
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.Properties.Resources.resources
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.csproj.GenerateResource.cache
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.csproj.CoreCompileInputs.cache
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.exe
+C:\Users\knham\Documents\Github\P2_PIRSENSOR\Kode\Styring_Kamera\Styring_kamera\obj\Debug\Styring_kamera.pdb

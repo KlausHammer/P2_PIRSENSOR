@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO.Ports;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace Styring_kamera // HUSK endline hvis der bruges readline
@@ -11,12 +13,13 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
         private string _comport = string.Empty;
         private SerialPort SerialPort1 = new SerialPort();
         private Form1 f1;
-
+        
 
         public string BaudRate
         {
             get { return _baudrate; }
             set { _baudrate = value; }
+           
         }
 
         public string ComPort
@@ -29,6 +32,7 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
 
 
 
+
         public SerialPortCom(string baud, string portComport, Form1 myform)
         {
             f1 = myform;
@@ -36,7 +40,7 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
             _comport = portComport;
 
             //   SerialPort1.DataReceived += new SerialDataReceivedEventHandler(SerialPort1_DataReceived);
-            SerialPort1.DataReceived += SerialPort1_DataReceived;
+         //   SerialPort1.DataReceived += SerialPort1_DataReceived;
         }
 
 
@@ -48,18 +52,21 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
             _comport = "COM1";
             // SerialPort1.DataReceived += new SerialDataReceivedEventHandler(SerialPort1_DataReceived);
             SerialPort1.DataReceived += SerialPort1_DataReceived;
-
+           
         }
 
         void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             updateFormGUI(SerialPort1.ReadLine());
+            SerialPort1.DiscardInBuffer();
 
         }
         private void updateFormGUI(string s)
         {
             f1.Serielmodtaget(s);
+            
         }
+
 
 
         public void SetPortNameValues(object obj)
@@ -68,6 +75,20 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
             foreach (string str in SerialPort.GetPortNames())
             {
                 ((ComboBox)obj).Items.Add(str);
+            }
+        }
+
+
+        public bool ClosePort()
+        {
+            try
+            {
+                if (SerialPort1.IsOpen == true) SerialPort1.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -99,6 +120,7 @@ namespace Styring_kamera // HUSK endline hvis der bruges readline
         {
             if (!(SerialPort1.IsOpen == true)) SerialPort1.Open();
             SerialPort1.Write(msg);
+            SerialPort1.DiscardOutBuffer();
         }
 
     }
