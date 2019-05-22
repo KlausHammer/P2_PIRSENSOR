@@ -37,6 +37,7 @@ void Motor::kalibrering() {
 	delay(150);
 
 	tack = enc.read();
+	detachInterrupt(digitalPinToInterrupt(resetPin));
 	/*
 	Serial.print("Curr pos: ");
 	Serial.println(enc.read());
